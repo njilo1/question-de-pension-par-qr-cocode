@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { 
-  ShieldCheck, ScanLine, Camera, Cpu, LogIn, 
+  ShieldCheck, ScanLine, Camera, Cpu, 
   CheckCircle2, QrCode, FileText, Lock, 
   Users, CheckCircle, AlertTriangle, TrendingUp,
   User, ShieldAlert, Facebook, Twitter, Linkedin, Instagram,
@@ -67,18 +67,9 @@ function PublicLandingPage() {
             <a href="#" className="text-white relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-0.5 after:bg-blue-500">Accueil</a>
             <Link to="/verify" className="text-slate-300 hover:text-white transition-colors">Vérification</Link>
             <Link to="/dashboard" className="text-slate-300 hover:text-white transition-colors">Historique</Link>
-            <a href="#about" className="text-slate-300 hover:text-white transition-colors">À propos</a>
-            <a href="#contact" className="text-slate-300 hover:text-white transition-colors">Contact</a>
           </nav>
           
-          <div>
-            <Link to="/login">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-6 font-bold">
-                <User className="mr-2 h-4 w-4" />
-                Connexion
-              </Button>
-            </Link>
-          </div>
+
         </div>
       </header>
 
@@ -157,7 +148,7 @@ function PublicLandingPage() {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-sm">Identité validée</h4>
-                  <p className="text-slate-300 text-xs mt-0.5">Bienvenue, Jean Dupont</p>
+                  <p className="text-slate-300 text-xs mt-0.5">Bienvenue, AT</p>
                   <p className="text-slate-400 text-[10px] mt-0.5">Matricule : 21MSI042</p>
                 </div>
               </div>
@@ -386,8 +377,8 @@ function PublicLandingPage() {
               
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-3"><Phone className="h-4 w-4 text-slate-500" /> +237 6 78 90 12 34</div>
-                <div className="flex items-center gap-3"><Mail className="h-4 w-4 text-slate-500" /> contact@univerify.cm</div>
-                <div className="flex items-center gap-3"><MapPin className="h-4 w-4 text-slate-500" /> Bamenda, Cameroun</div>
+                <div className="flex items-center gap-3"><Mail className="h-4 w-4 text-slate-500" /> fs-univ-ebolowa@gmail.com</div>
+                <div className="flex items-center gap-3"><MapPin className="h-4 w-4 text-slate-500" /> Ebolowa, Cameroun</div>
               </div>
             </div>
             
@@ -398,8 +389,6 @@ function PublicLandingPage() {
                 <li><Link to="/" className="hover:text-blue-400 transition-colors">Accueil</Link></li>
                 <li><Link to="/verify" className="hover:text-blue-400 transition-colors">Vérification</Link></li>
                 <li><Link to="/dashboard" className="hover:text-blue-400 transition-colors">Historique</Link></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">À propos</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact</a></li>
               </ul>
             </div>
             

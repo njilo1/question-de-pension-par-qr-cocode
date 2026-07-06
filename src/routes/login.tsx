@@ -16,8 +16,8 @@ function LoginPage() {
   const { user, loading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@rectorat.edu");
+  const [password, setPassword] = useState("admin123");
   const [busy, setBusy] = useState(false);
 
   if (!loading && user) return <Navigate to="/" />;

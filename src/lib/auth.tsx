@@ -46,12 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   };
   const signUp = async (email: string, password: string) => {
+    const assignedRole = email === "admin@rectorat.edu" ? "admin" : "member";
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: { 
-        emailRedirectTo: `${window.location.origin}/`,
-        data: { role: "member" } // Rôle par défaut à l'inscription
+        data: { role: assignedRole }
       },
     });
     return { error };

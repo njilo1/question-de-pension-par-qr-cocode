@@ -38,7 +38,6 @@ function FaceVerifyPage() {
   
   const [loading, setLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [result, setResult] = useState<any | null>(null);
   
   // matchedData pour receipt mode
   const [matchedData, setMatchedData] = useState<{ student: any, payment: any, isFaceMatch: boolean, isValidReceipt: boolean } | null>(null);
@@ -118,7 +117,6 @@ function FaceVerifyPage() {
   const onCapture = async (capturedImage: string) => {
     try {
       setIsVerifying(true);
-      setResult(null);
       setMatchedData(null);
       setAccessData(null);
 
@@ -135,8 +133,6 @@ function FaceVerifyPage() {
             }))
           }
         });
-        
-        setResult(data);
 
         if (data.paymentId) {
           const match = pending.find(p => p.id === data.paymentId);
@@ -400,7 +396,7 @@ function FaceVerifyPage() {
             
             {(matchedData || accessData) && (
               <div className="w-full mt-6">
-                <Button variant="outline" className="w-full" onClick={() => { setResult(null); setMatchedData(null); setAccessData(null); }}>
+                <Button variant="outline" className="w-full" onClick={() => { setMatchedData(null); setAccessData(null); }}>
                   <RefreshCw className="h-4 w-4 mr-2" /> Nouvelle Analyse
                 </Button>
               </div>

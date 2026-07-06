@@ -40,27 +40,6 @@ async function getBase64Data(input: string): Promise<string> {
   return arrayBufferToBase64(arrayBuffer);
 }
 
-function calculerSimilarite(base64A: string, base64B: string): number {
-  try {
-    const lenA = base64A.length;
-    const lenB = base64B.length;
-    const ratioTaille = Math.min(lenA, lenB) / Math.max(lenA, lenB);
-    const echantillons = 20;
-    let correspondances = 0;
-    for (let i = 0; i < echantillons; i++) {
-      const posA = Math.floor((i / echantillons) * (lenA - 4));
-      const posB = Math.floor((i / echantillons) * (lenB - 4));
-      const segA = base64A.substring(posA, posA + 4);
-      const segB = base64B.substring(posB, posB + 4);
-      let match = 0;
-      for (let j = 0; j < 4; j++) { if (segA[j] === segB[j]) match++; }
-      correspondances += match / 4;
-    }
-    const scoreFinal = (ratioTaille * 0.3) + ((correspondances / echantillons) * 0.7);
-    return Math.min(Math.round(scoreFinal * 100), 100);
-  } catch(e) { return 0; }
-}
-
 export async function verifyFaceFn({ data }: { data: VerifyArgs }) {
   const { capturedImage, candidates } = data;
   
