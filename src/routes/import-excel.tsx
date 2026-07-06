@@ -5,7 +5,7 @@ import { AppShell } from "@/components/AppShell";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload, FileSpreadsheet, CheckCircle2, AlertTriangle, Loader2 } from "lucide-react";
+import { Upload, FileSpreadsheet, CheckCircle2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
@@ -87,7 +87,9 @@ function ImportExcelPage() {
             verified_by: session?.user?.id,
             face_match: true,
             confidence_score: 100,
-            face_analysis: `Validé par import Excel (Date banque: ${row.date || 'N/A'})`
+            face_analysis: `Validé par import Excel (Date banque: ${row.date || 'N/A'})`,
+            qr_raw_text: `IMPORT_EXCEL|${row.matricule}|${row.montant}`,
+            remettant: row.nom || "Import Excel"
           });
 
         if (insertError) errorCount++;
