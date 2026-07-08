@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Upload, FileSpreadsheet, CheckCircle2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
 
@@ -77,20 +78,22 @@ function ImportExcelPage() {
           continue;
         }
 
+        const paymentPayload: Database["public"]["Tables"]["payments"]["Insert"] = {
+          student_id: student.id,
+          amount: Number(row.montant) || 0,
+          account_number: row.compte || "IMPORT_EXCEL",
+          status: "verified",
+          verified_by: session?.user?.id ?? null,
+          face_match: true,
+          confidence_score: 100,
+          face_analysis: `Validé par import Excel (Date banque: ${row.date || 'N/A'})`,
+          qr_raw_text: `IMPORT_EXCEL|${row.matricule}|${row.montant}`,
+          remettant: row.nom || "Import Excel"
+        };
+
         const { error: insertError } = await supabase
           .from("payments")
-          .insert({
-            student_id: student.id,
-            amount: Number(row.montant) || 0,
-            account_number: row.compte || "IMPORT_EXCEL",
-            status: "verified",
-            verified_by: session?.user?.id,
-            face_match: true,
-            confidence_score: 100,
-            face_analysis: `Validé par import Excel (Date banque: ${row.date || 'N/A'})`,
-            qr_raw_text: `IMPORT_EXCEL|${row.matricule}|${row.montant}`,
-            remettant: row.nom || "Import Excel"
-          });
+          .insert(paymentPayload);
 
         if (insertError) errorCount++;
         else successCount++;
