@@ -65,15 +65,15 @@ function Inner() {
   };
 
   return (
-    <div className="space-y-8">
-      <header className="flex items-center justify-between">
+    <div className="space-y-6 lg:space-y-8">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">Répertoire Étudiants</h1>
-          <p className="text-muted-foreground text-lg mt-1">{students.length} membres enregistrés dans la base.</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Répertoire Étudiants</h1>
+          <p className="text-muted-foreground text-base lg:text-lg mt-1">{students.length} membres enregistrés dans la base.</p>
         </div>
         <Dialog open={open} onOpenChange={(val) => { setOpen(val); if (!val) setEditingStudent(null); }}>
           <DialogTrigger asChild>
-            <Button size="lg" className="shadow-premium" onClick={() => { setEditingStudent(null); setOpen(true); }}><Plus className="h-5 w-5 mr-2" />Nouvel Étudiant</Button>
+            <Button size="lg" className="shadow-premium w-full sm:w-auto flex-shrink-0" onClick={() => { setEditingStudent(null); setOpen(true); }}><Plus className="h-5 w-5 mr-2" />Nouvel Étudiant</Button>
           </DialogTrigger>
           <DialogContent className="max-w-xl glass rounded-3xl p-6 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
@@ -94,7 +94,7 @@ function Inner() {
           placeholder="Rechercher par nom ou matricule…" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
-          className="max-w-md h-12 rounded-xl bg-card/50 backdrop-blur-sm border-primary/10 focus:ring-primary/40" 
+          className="w-full sm:max-w-md h-12 rounded-xl bg-card/50 backdrop-blur-sm border-primary/10 focus:ring-primary/40" 
         />
       </div>
 
@@ -103,9 +103,9 @@ function Inner() {
           Aucun étudiant trouvé correspondant à votre recherche.
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
           {filtered.map((s) => (
-            <Card key={s.id} className="p-5 flex gap-5 shadow-elegant hover-lift bg-card/60 border-primary/5 group">
+            <Card key={s.id} className="p-4 sm:p-5 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 shadow-elegant hover-lift bg-card/60 border-primary/5 group text-center sm:text-left">
               {(() => {
                 let displayUrl = s.reference_photo_url;
                 if (displayUrl?.startsWith("[")) {
@@ -132,7 +132,7 @@ function Inner() {
                 <div className="text-xs text-muted-foreground font-medium">{s.filiere} · {s.niveau}</div>
                 <div className="text-base font-black text-gradient mt-2">{Number(s.pension_amount).toLocaleString("fr-FR")} XAF</div>
               </div>
-              <div className="flex flex-col gap-1 flex-shrink-0">
+              <div className="flex flex-row sm:flex-col justify-center gap-2 flex-shrink-0 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-primary/5">
                 <Button 
                   variant="ghost" 
                   size="icon" 
@@ -298,7 +298,7 @@ export function StudentForm({
         <Label>Nom complet</Label>
         <Input required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="ATYAM MFOU'OU FELECITE BRUNA" />
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label>Matricule</Label>
           <Input required value={matricule} onChange={(e) => setMatricule(e.target.value)} />
@@ -308,7 +308,7 @@ export function StudentForm({
           <Input required value={niveau} onChange={(e) => setNiveau(e.target.value)} placeholder="L2" />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label>Filière</Label>
           <Input required value={filiere} onChange={(e) => setFiliere(e.target.value)} placeholder="Génie Informatique" />

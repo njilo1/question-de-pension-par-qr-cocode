@@ -44,3 +44,5 @@ dist-ssr
 
 # Fichiers de verrouillage LibreOffice
 .~lock.*#
+
+.vercel

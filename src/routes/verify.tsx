@@ -294,9 +294,9 @@ function VerifyPage() {
                 </div>
               </div>
               
-              <div className="flex gap-3 pt-2">
-                <Button variant="ghost" onClick={() => setStep("scan")} className="flex-1">Retour</Button>
-                <Button onClick={onManualSubmit} disabled={loading} className="flex-[2] font-bold shadow-premium">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Button variant="ghost" onClick={() => setStep("scan")} className="w-full sm:flex-1">Retour</Button>
+                <Button onClick={onManualSubmit} disabled={loading} className="w-full sm:flex-[2] font-bold shadow-premium">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <ShieldCheck className="h-4 w-4 mr-2" />} 
                   Continuer la vérification
                 </Button>
@@ -336,7 +336,7 @@ function VerifyPage() {
                   </div>
 
                   <div className="grid gap-4 bg-muted/30 p-6 rounded-2xl border border-primary/5">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Matricule</label>
                         <Input 
@@ -355,7 +355,7 @@ function VerifyPage() {
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Niveau</label>
                         <Input 
@@ -420,9 +420,9 @@ function VerifyPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-3 pt-2">
-                    <Button variant="ghost" onClick={reset} className="flex-1">Annuler</Button>
-                    <Button onClick={saveAndNext} disabled={loading} className="flex-1 shadow-premium font-bold">
+                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <Button variant="ghost" onClick={reset} className="w-full sm:flex-1">Annuler</Button>
+                    <Button onClick={saveAndNext} disabled={loading} className="w-full sm:flex-1 shadow-premium font-bold">
                       {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <ShieldCheck className="h-4 w-4 mr-2" />}
                       Valider & Enregistrer
                     </Button>
@@ -570,8 +570,8 @@ export function FaceCapture({ onCapture, isVerifying = false }: { onCapture: (im
         )}
 
         {!captured && !error && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-64 h-84 border-2 border-dashed border-white/50 rounded-[120px] relative">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4">
+            <div className="w-[80%] max-w-[256px] aspect-[3/4] border-2 border-dashed border-white/50 rounded-[120px] relative">
               <div className="absolute inset-0 border-2 border-primary rounded-[120px] animate-pulse opacity-50"></div>
             </div>
             {ready && <div className="absolute inset-0 w-full h-1 bg-primary/50 shadow-[0_0_15px_rgba(var(--primary),0.5)] animate-scan-line"></div>}
@@ -600,8 +600,8 @@ export function FaceCapture({ onCapture, isVerifying = false }: { onCapture: (im
           )}
         </div>
       ) : (
-        <div className="flex gap-2">
-          <Button onClick={resetCapture} disabled={isVerifying} variant="outline" className="flex-1 font-bold">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button onClick={resetCapture} disabled={isVerifying} variant="outline" className="w-full sm:flex-1 font-bold">
             <RefreshCw className="h-4 w-4 mr-2" /> Reprendre
           </Button>
           <Button disabled className="flex-[2] font-bold">

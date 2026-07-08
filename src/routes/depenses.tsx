@@ -118,14 +118,14 @@ function Inner() {
   };
   return (
     <div className="space-y-10">
-      <header className="flex items-end justify-between">
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">Audit des Paiements</h1>
-          <p className="text-muted-foreground text-lg mt-1">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Audit des Paiements</h1>
+          <p className="text-muted-foreground text-base sm:text-lg mt-1">
             Traçabilité complète et historique des vérifications biométriques.
           </p>
         </div>
-        <Button variant="outline" size="lg" className="rounded-xl border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300" onClick={exportCSV} disabled={filtered.length === 0}>
+        <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-xl border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300" onClick={exportCSV} disabled={filtered.length === 0}>
           <Download className="h-5 w-5 mr-2" />
           Exporter l'Audit
         </Button>
@@ -162,22 +162,22 @@ function Inner() {
       {/* Filters */}
       <Card className="p-4">
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative flex-1 w-full sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Rechercher étudiant, remettant…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              className="pl-9 w-full"
             />
           </div>
-          <div className="flex items-center gap-1">
-            <Filter className="h-4 w-4 text-muted-foreground mr-1" />
+          <div className="flex overflow-x-auto pb-2 sm:pb-0 sm:flex-wrap items-center gap-2 mt-3 sm:mt-0 w-full sm:w-auto hide-scrollbar">
+            <Filter className="h-4 w-4 text-muted-foreground mr-1 hidden sm:block shrink-0" />
             {STATUS_OPTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex-1 sm:flex-none text-center ${
                   statusFilter === s
                     ? "bg-primary text-primary-foreground"
                     : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
@@ -207,8 +207,62 @@ function Inner() {
             <p className="text-sm mt-1">Lancez une vérification pour en voir apparaître ici.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div>
+            {/* Vue Mobile : Cartes empilées */}
+            <div className="md:hidden space-y-4 p-4">
+              {filtered.map((p) => (
+                <div key={p.id} className="bg-muted/20 p-4 rounded-xl border border-primary/5 relative space-y-3" onClick={() => setExpanded(expanded === p.id ? null : p.id)}>
+                  <div className="absolute top-4 right-4">
+                    <StatusBadge status={p.status} />
+                  </div>
+                  <div className="text-xs text-muted-foreground">{new Date(p.created_at).toLocaleString("fr-FR")}</div>
+                  <div>
+                    {p.students ? (
+                      <div>
+                        <div className="font-bold">{p.students.full_name}</div>
+                        <div className="text-xs text-muted-foreground">{p.students.matricule}</div>
+                      </div>
+                    ) : (
+                      <span className="italic text-muted-foreground flex items-center gap-1"><UserCircle2 className="h-4 w-4" />Non identifié</span>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-t border-primary/5 pt-2">
+                    <span className="text-muted-foreground">Montant</span>
+                    <span className="font-bold">{p.amount != null ? `${Number(p.amount).toLocaleString("fr-FR")} XAF` : "—"}</span>
+                  </div>
+                  {expanded === p.id && (
+                    <div className="pt-3 mt-3 border-t border-primary/10 space-y-4 animate-in fade-in duration-300">
+                      <div>
+                        <div className="text-[10px] font-bold text-muted-foreground uppercase mb-2">Photo capturée</div>
+                        {p.captured_photo_url ? (
+                          <img src={p.captured_photo_url} className="h-24 w-24 rounded-lg object-cover border" alt="Capture" />
+                        ) : (
+                          <div className="h-24 w-24 rounded-lg bg-muted flex items-center justify-center text-muted-foreground"><UserCircle2 className="h-8 w-8" /></div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Détails du reçu</div>
+                        <div className="text-xs space-y-1">
+                          <div className="flex justify-between"><span className="text-muted-foreground">Remettant</span><span>{p.remettant}</span></div>
+                          <div className="flex justify-between"><span className="text-muted-foreground">Compte</span><span>{p.account_number || "—"}</span></div>
+                        </div>
+                      </div>
+                      <div>
+                         <div className="text-[10px] font-bold text-muted-foreground uppercase mb-1">Analyse IA</div>
+                         <p className="text-xs italic text-muted-foreground">"{p.face_analysis || "Aucune analyse"}"</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="text-center text-muted-foreground text-[10px] pt-1">
+                    {expanded === p.id ? "▲ Réduire" : "▼ Détails"}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Vue Desktop : Tableau */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
               <thead>
                 <tr className="text-left text-muted-foreground border-b bg-muted/40">
                   <th className="px-4 py-3 font-medium">Date</th>
@@ -338,6 +392,7 @@ function Inner() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </Card>
@@ -358,12 +413,12 @@ function SummaryCard({
 }) {
   return (
     <Card className="p-6 hover-lift border-primary/5 bg-card/50 backdrop-blur-md">
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{label}</p>
-          <div className="text-3xl font-black tracking-tight">{value}</div>
+      <div className="flex items-start justify-between gap-2">
+        <div className="space-y-1 min-w-0">
+          <p className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-wider leading-tight">{label}</p>
+          <div className="text-xl sm:text-3xl font-black tracking-tight truncate">{value}</div>
         </div>
-        <div className={`h-12 w-12 rounded-2xl ${colorClass} flex items-center justify-center border border-primary/10 shadow-sm`}>
+        <div className={`h-10 w-10 sm:h-12 sm:w-12 rounded-xl sm:rounded-2xl flex-shrink-0 ${colorClass} flex items-center justify-center border border-primary/10 shadow-sm`}>
           {icon}
         </div>
       </div>

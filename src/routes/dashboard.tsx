@@ -107,29 +107,29 @@ function Dashboard() {
   };
 
   return (
-    <div className="space-y-12">
-      <header className="flex items-end justify-between">
+    <div className="space-y-6 lg:space-y-12">
+      <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-5xl font-extrabold tracking-tight text-white">Tableau de Bord</h1>
-          <p className="text-muted-foreground text-xl mt-2">Supervision en temps réel des flux de vérification.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">Tableau de Bord</h1>
+          <p className="text-muted-foreground text-base lg:text-xl mt-2">Supervision en temps réel des flux de vérification.</p>
         </div>
-        <Link to="/verify">
-          <Button size="lg" className="shadow-premium animate-in slide-in-from-right-4 duration-500 text-base px-6 py-3 h-auto">
+        <Link to="/verify" className="flex-shrink-0">
+          <Button size="lg" className="shadow-premium animate-in slide-in-from-right-4 duration-500 text-base px-6 py-3 h-auto w-full sm:w-auto">
             <ScanLine className="h-5 w-5 mr-2" />
             Nouvelle Session
           </Button>
         </Link>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <StatCard icon={<Users className="h-7 w-7 text-primary" />} label="Étudiants Actifs" value={stats.totalStudents} />
-        <StatCard icon={<CheckCircle2 className="h-7 w-7 text-success" />} label="Identités Validées" value={stats.verifiedToday} />
-        <StatCard icon={<XCircle className="h-7 w-7 text-destructive" />} label="Tentatives Rejetées" value={stats.rejectedToday} />
-        <StatCard icon={<Wallet className="h-7 w-7 text-accent" />} label="Volume Financier" value={`${stats.totalAmount.toLocaleString("fr-FR")} XAF`} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+        <StatCard icon={<Users className="h-6 w-6 lg:h-7 lg:w-7 text-primary" />} label="Étudiants Actifs" value={stats.totalStudents} />
+        <StatCard icon={<CheckCircle2 className="h-6 w-6 lg:h-7 lg:w-7 text-success" />} label="Identités Validées" value={stats.verifiedToday} />
+        <StatCard icon={<XCircle className="h-6 w-6 lg:h-7 lg:w-7 text-destructive" />} label="Tentatives Rejetées" value={stats.rejectedToday} />
+        <StatCard icon={<Wallet className="h-6 w-6 lg:h-7 lg:w-7 text-accent" />} label="Volume Financier" value={`${stats.totalAmount.toLocaleString("fr-FR")} XAF`} />
       </div>
 
-      <Card className="p-8">
-        <h2 className="font-semibold text-2xl text-white mb-6">Vérifications récentes</h2>
+      <Card className="p-4 lg:p-8">
+        <h2 className="font-semibold text-xl lg:text-2xl text-white mb-4 lg:mb-6">Vérifications récentes</h2>
         {loading ? (
           <div className="text-muted-foreground text-sm">Chargement…</div>
         ) : recent.length === 0 ? (
@@ -137,8 +137,57 @@ function Dashboard() {
             Aucune vérification encore. Lancez la première !
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-base">
+          <div>
+            {/* Vue mobile: cartes empilées */}
+            <div className="md:hidden space-y-4">
+              {recent.map((p) => (
+                <div key={p.id} className="p-4 bg-muted/30 rounded-xl border border-primary/10 relative">
+                  <div className="absolute top-4 right-4">
+                    <StatusBadge status={p.status} />
+                  </div>
+                  <div className="text-xs text-muted-foreground mb-2">{new Date(p.created_at).toLocaleString("fr-FR")}</div>
+                  <div className="mb-3">
+                    {p.students ? (
+                      <div>
+                        <div className="font-semibold text-base">{p.students.full_name}</div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-sm text-muted-foreground font-medium">{p.students.matricule}</span>
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary/30" />
+                          <span className="text-[10px] font-bold text-primary bg-primary/5 px-2 py-0.5 rounded-full border border-primary/10">{getAcademicYear(p.created_at)}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground italic">Non identifié</span>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-t border-primary/5 pt-3 mt-3">
+                    <span className="text-muted-foreground">Montant</span>
+                    <span className="font-bold text-foreground">{p.amount ? `${Number(p.amount).toLocaleString("fr-FR")} XAF` : "—"}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-t border-primary/5 pt-3 mt-3">
+                    <span className="text-muted-foreground">Visage</span>
+                    <span>
+                      {p.status === "pending" ? (
+                        <span className="text-muted-foreground">—</span>
+                      ) : p.face_match ? (
+                        <span className="inline-flex items-center gap-1 text-success"><CheckCircle2 className="h-4 w-4" />OK</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-destructive"><XCircle className="h-4 w-4" />Non</span>
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10" onClick={() => onDeletePayment(p.id)}>
+                      <Trash2 className="h-4 w-4 mr-2" /> Supprimer
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Vue desktop: tableau */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-base whitespace-nowrap">
               <thead>
                 <tr className="text-left text-muted-foreground border-b">
                   <th className="py-4 pr-4 font-semibold">Date</th>
@@ -204,6 +253,7 @@ function Dashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </Card>
@@ -213,13 +263,13 @@ function Dashboard() {
 
 function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
   return (
-    <Card className="p-8 hover-lift border-primary/5 bg-card/50 backdrop-blur-md">
-      <div className="flex items-start justify-between">
-        <div className="space-y-2">
-          <p className="text-base font-bold text-muted-foreground uppercase tracking-wider">{label}</p>
-          <div className="text-4xl font-black tracking-tight">{value}</div>
+    <Card className="p-4 lg:p-8 hover-lift border-primary/5 bg-card/50 backdrop-blur-md">
+      <div className="flex items-start justify-between gap-2">
+        <div className="space-y-1 lg:space-y-2 min-w-0">
+          <p className="text-[10px] lg:text-base font-bold text-muted-foreground uppercase tracking-wider leading-tight">{label}</p>
+          <div className="text-xl lg:text-4xl font-black tracking-tight truncate">{value}</div>
         </div>
-        <div className="h-14 w-14 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10">
+        <div className="h-10 w-10 lg:h-14 lg:w-14 rounded-xl lg:rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10 flex-shrink-0">
           {icon}
         </div>
       </div>

@@ -109,8 +109,8 @@ function ImportExcelPage() {
   return (
     <AppShell>
       <div className="max-w-6xl mx-auto space-y-6">
-        <h1 className="text-3xl font-bold flex items-center gap-3">
-          <FileSpreadsheet className="text-primary h-8 w-8" />
+        <h1 className="text-2xl sm:text-3xl font-bold flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+          <FileSpreadsheet className="text-primary h-8 w-8 shrink-0" />
           Importation Bancaire (Excel)
         </h1>
 
@@ -137,19 +137,39 @@ function ImportExcelPage() {
 
         {data.length > 0 && (
           <Card className="p-6 space-y-4 border-primary/20 shadow-lg">
-            <div className="flex justify-between items-center border-b pb-4">
-              <h3 className="text-xl font-bold flex items-center gap-2">
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
-                Aperçu des données ({data.length} enregistrements)
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
+              <h3 className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                <CheckCircle2 className="h-6 w-6 text-green-500 shrink-0" />
+                <span>Aperçu des données ({data.length})</span>
               </h3>
-              <Button onClick={processImport} disabled={isProcessing} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={processImport} disabled={isProcessing} className="w-full sm:w-auto bg-green-600 hover:bg-green-700">
                 {isProcessing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Upload className="h-4 w-4 mr-2" />}
                 Valider l'importation
               </Button>
             </div>
             
-            <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
-              <table className="w-full text-sm text-left">
+            <div className="md:hidden space-y-4 max-h-[500px] overflow-y-auto pr-2">
+              {data.map((row, idx) => (
+                <div key={idx} className="bg-muted/20 p-4 rounded-xl border border-primary/5 space-y-2">
+                  <div className="flex justify-between items-start">
+                    <span className="font-bold text-primary">{row.matricule}</span>
+                    <span className="text-xs text-muted-foreground">{row.date || "-"}</span>
+                  </div>
+                  <div className="font-medium">{row.nom || "-"}</div>
+                  <div className="flex justify-between items-center text-sm border-t border-primary/5 pt-2 mt-2">
+                    <span className="text-muted-foreground">Compte</span>
+                    <span className="font-mono text-xs">{row.compte || "-"}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm border-t border-primary/5 pt-2 mt-2">
+                    <span className="text-muted-foreground">Montant</span>
+                    <span className="font-bold">{Number(row.montant).toLocaleString()} FCFA</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="hidden md:block overflow-x-auto max-h-[500px] overflow-y-auto">
+              <table className="w-full text-sm text-left whitespace-nowrap">
                 <thead className="text-xs text-muted-foreground uppercase bg-secondary/50 sticky top-0">
                   <tr>
                     <th className="px-4 py-3">Matricule</th>

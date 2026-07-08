@@ -81,13 +81,13 @@ function Inner() {
   return (
     <div className="space-y-8">
       <header>
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="h-12 w-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center border border-primary/20 shrink-0">
             <FileSpreadsheet className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-white">Import / Export Excel</h1>
-            <p className="text-muted-foreground text-lg mt-0.5">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Import / Export Excel</h1>
+            <p className="text-muted-foreground text-sm sm:text-lg mt-0.5">
               Synchronisez la base étudiants avec les fichiers Excel de la scolarité.
             </p>
           </div>
@@ -191,16 +191,16 @@ function ExportPanel({ students, niveaux }: { students: ScolariteStudent[]; nive
       </div>
 
       <div className="flex flex-col gap-2.5 mt-auto pt-2">
-        <Button size="lg" onClick={exportOne} disabled={!niveau || busy} className="shadow-premium">
+        <Button size="lg" onClick={exportOne} disabled={!niveau || busy} className="w-full shadow-premium">
           <FileDown className="h-5 w-5 mr-2" />
           Exporter le niveau {niveau}
         </Button>
-        <div className="flex gap-2.5">
-          <Button variant="secondary" className="flex-1" onClick={exportAll} disabled={busy || !niveaux.length}>
+        <div className="flex flex-col sm:flex-row gap-2.5">
+          <Button variant="secondary" className="w-full sm:flex-1" onClick={exportAll} disabled={busy || !niveaux.length}>
             {busy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Layers className="h-4 w-4 mr-2" />}
             Tous les niveaux
           </Button>
-          <Button variant="secondary" className="flex-1" onClick={() => downloadTemplate()}>
+          <Button variant="secondary" className="w-full sm:flex-1" onClick={() => downloadTemplate()}>
             <FileText className="h-4 w-4 mr-2" />
             Modèle vierge
           </Button>

@@ -1,7 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 import { 
   ShieldCheck, ScanLine, Camera, Cpu, 
   CheckCircle2, QrCode, FileText, Lock, 
@@ -22,6 +23,10 @@ interface Stats {
 }
 
 function PublicLandingPage() {
+  const { user, loading } = useAuth();
+  
+  if (!loading && !user) return <Navigate to="/login" />;
+
   const [stats, setStats] = useState<Stats>({ 
     totalStudents: 0, verifiedToday: 0, paymentsValidated: 0, alertsDetected: 0 
   });
@@ -75,7 +80,7 @@ function PublicLandingPage() {
 
       {/* 2. Hero Section */}
       <section className="bg-white overflow-hidden border-b border-slate-200">
-        <div className="container mx-auto px-4 lg:px-8 py-16 lg:py-24 flex flex-col lg:flex-row items-center gap-12">
+        <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-24 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
           
           {/* Left Text */}
           <div className="flex-1 space-y-8">
@@ -121,8 +126,8 @@ function PublicLandingPage() {
             
             {/* Mockup Floating Cards built with CSS */}
             
-            {/* Phone Mockup floating */}
-            <div className="absolute -left-6 top-1/4 w-48 bg-white rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] p-4 border border-slate-100 rotate-[-2deg] animate-in slide-in-from-bottom-8 duration-700 delay-300">
+            {/* Phone Mockup floating - hidden on small screens */}
+            <div className="hidden sm:block absolute -left-6 top-1/4 w-48 bg-white rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] p-4 border border-slate-100 rotate-[-2deg] animate-in slide-in-from-bottom-8 duration-700 delay-300">
               <div className="w-full bg-slate-50 rounded-xl overflow-hidden border border-slate-200">
                 <div className="h-8 bg-slate-100 flex items-center justify-center border-b border-slate-200">
                   <div className="w-12 h-1.5 bg-slate-300 rounded-full"></div>
@@ -140,8 +145,8 @@ function PublicLandingPage() {
               </div>
             </div>
             
-            {/* Face ID Mockup floating */}
-            <div className="absolute -right-8 bottom-12 bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.4)] p-4 border border-white/10 w-64 rotate-[2deg] animate-in slide-in-from-right-8 duration-700 delay-500">
+            {/* Face ID Mockup floating - hidden on small screens */}
+            <div className="hidden sm:block absolute -right-8 bottom-12 bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.4)] p-4 border border-white/10 w-64 rotate-[2deg] animate-in slide-in-from-right-8 duration-700 delay-500">
               <div className="flex items-start gap-3 mb-2">
                 <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
                   <CheckCircle2 className="h-5 w-5 text-green-500" />
@@ -223,7 +228,7 @@ function PublicLandingPage() {
             {/* Right: Features */}
             <div className="flex-1 p-8 lg:p-10">
               <h2 className="text-xl font-bold text-slate-900 mb-8">Nos fonctionnalités</h2>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 
                 <div className="text-center p-4 border border-slate-100 rounded-xl hover:shadow-md transition-shadow bg-white">
                   <div className="mx-auto w-10 h-10 mb-3 text-blue-600 flex items-center justify-center">
@@ -281,35 +286,35 @@ function PublicLandingPage() {
                 <span className="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">Vérifications • Aujourd'hui</span>
               </div>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 relative z-10">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Users className="h-5 w-5 text-blue-400" />
-                    <span className="text-3xl font-black">{stats.totalStudents.toLocaleString('fr-FR')}</span>
+                    <Users className="h-4 w-4 lg:h-5 lg:w-5 text-blue-400" />
+                    <span className="text-2xl lg:text-3xl font-black">{stats.totalStudents.toLocaleString('fr-FR')}</span>
                   </div>
                   <p className="text-xs text-slate-400">Étudiants enregistrés</p>
                 </div>
                 
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="h-5 w-5 text-blue-400" />
-                    <span className="text-3xl font-black">{stats.verifiedToday.toLocaleString('fr-FR')}</span>
+                    <CheckCircle className="h-4 w-4 lg:h-5 lg:w-5 text-blue-400" />
+                    <span className="text-2xl lg:text-3xl font-black">{stats.verifiedToday.toLocaleString('fr-FR')}</span>
                   </div>
                   <p className="text-xs text-slate-400">Vérifications aujourd'hui</p>
                 </div>
                 
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-400" />
-                    <span className="text-3xl font-black">{stats.paymentsValidated.toLocaleString('fr-FR')}</span>
+                    <CheckCircle2 className="h-4 w-4 lg:h-5 lg:w-5 text-green-400" />
+                    <span className="text-2xl lg:text-3xl font-black">{stats.paymentsValidated.toLocaleString('fr-FR')}</span>
                   </div>
                   <p className="text-xs text-slate-400">Paiements validés</p>
                 </div>
                 
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="h-5 w-5 text-orange-400" />
-                    <span className="text-3xl font-black">{stats.alertsDetected.toLocaleString('fr-FR')}</span>
+                    <AlertTriangle className="h-4 w-4 lg:h-5 lg:w-5 text-orange-400" />
+                    <span className="text-2xl lg:text-3xl font-black">{stats.alertsDetected.toLocaleString('fr-FR')}</span>
                   </div>
                   <p className="text-xs text-slate-400">Alertes détectées</p>
                 </div>
@@ -320,7 +325,7 @@ function PublicLandingPage() {
             <div className="lg:w-[45%] bg-slate-200/60 rounded-2xl p-8 border border-slate-200">
               <h2 className="text-xl font-bold text-slate-900 mb-6">Se connecter en tant que</h2>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
                 {/* Membre */}
                 <div className="bg-white rounded-xl p-5 border border-slate-100 shadow-sm flex flex-col h-full">
@@ -360,7 +365,7 @@ function PublicLandingPage() {
       {/* 5. Footer (Navy Blue) */}
       <footer className="bg-[#0b1120] text-slate-300 py-12 border-t border-slate-800">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
             {/* Logo & Info */}
             <div className="col-span-1 md:col-span-2">

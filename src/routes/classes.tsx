@@ -76,15 +76,15 @@ function InnerClasses() {
   };
 
   return (
-    <div className="space-y-8">
-      <header className="flex items-center justify-between">
+    <div className="space-y-6 lg:space-y-8">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">Gestion des Classes</h1>
-          <p className="text-muted-foreground text-lg mt-1">{classes.length} classes configurées pour l'établissement.</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Gestion des Classes</h1>
+          <p className="text-muted-foreground text-base sm:text-lg mt-1">{classes.length} classes configurées pour l'établissement.</p>
         </div>
         <Dialog open={open} onOpenChange={(val) => { setOpen(val); if (!val) setEditingClass(null); }}>
           <DialogTrigger asChild>
-            <Button size="lg" className="shadow-premium" onClick={() => { setEditingClass(null); setOpen(true); }}>
+            <Button size="lg" className="shadow-premium w-full sm:w-auto" onClick={() => { setEditingClass(null); setOpen(true); }}>
               <Plus className="h-5 w-5 mr-2" />Nouvelle Classe
             </Button>
           </DialogTrigger>
@@ -107,7 +107,7 @@ function InnerClasses() {
           placeholder="Rechercher une classe, filière, niveau…" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
-          className="max-w-md h-12 rounded-xl bg-card/50 backdrop-blur-sm border-primary/10 focus:ring-primary/40" 
+          className="w-full sm:max-w-md h-12 rounded-xl bg-card/50 backdrop-blur-sm border-primary/10 focus:ring-primary/40" 
         />
       </div>
 
@@ -252,7 +252,7 @@ function ClassForm({ onCreated, editingClass }: ClassFormProps) {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label>Filière</Label>
           <Input 
