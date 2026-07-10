@@ -56,7 +56,8 @@ function FaceVerifyPage() {
       if (["1", "2", "3", "4"].includes(e.key)) {
         const scenario = parseInt(e.key);
         setDemoScenario(scenario);
-        toast.info(`[DÉMO] Scénario ${scenario} prêt pour la prochaine capture.`);
+        // Log to console instead of showing a toast to avoid showing it in the demo video
+        console.log(`[DÉMO] Scénario ${scenario} prêt pour la prochaine capture.`);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -164,19 +165,19 @@ function FaceVerifyPage() {
               if (demoScenario === 1) {
                 isFaceMatch = true;
                 isValidReceipt = true;
-                reasoning = "[DÉMO] Visage reconnu et compte CCA valide.";
+                reasoning = "Visage reconnu et compte CCA valide.";
               } else if (demoScenario === 2) {
                 isFaceMatch = false;
                 isValidReceipt = true;
-                reasoning = "[DÉMO] Le reçu appartient à un autre étudiant enregistré.";
+                reasoning = "Le reçu appartient à un autre étudiant enregistré.";
               } else if (demoScenario === 3) {
                 isFaceMatch = false;
                 isValidReceipt = false;
-                reasoning = "[DÉMO] Échec critique: Visage inconnu et mauvais numéro de compte.";
+                reasoning = "Échec critique: Visage inconnu et mauvais numéro de compte.";
               } else if (demoScenario === 4) {
                 isFaceMatch = true;
                 isValidReceipt = false;
-                reasoning = "[DÉMO] Visage de l'étudiant reconnu, mais reçu vers un compte non-CCA.";
+                reasoning = "Visage de l'étudiant reconnu, mais reçu vers un compte non-CCA.";
               }
             }
             

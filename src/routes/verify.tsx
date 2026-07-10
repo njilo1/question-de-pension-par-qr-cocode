@@ -144,6 +144,22 @@ function VerifyPage() {
 
     setLoading(true);
     try {
+      // Vérification de la non-redondance du reçu (éviter d'enregistrer le même QR Code deux fois)
+      if (scannedData && scannedData !== "MANUAL_ENTRY") {
+        const { data: existingPayment, error: checkErr } = await supabase
+          .from("payments")
+          .select("id")
+          .eq("qr_raw_text", scannedData)
+          .maybeSingle();
+
+        if (checkErr) throw checkErr;
+        if (existingPayment) {
+          toast.error("Ce reçu a déjà été scanné et enregistré !");
+          setLoading(false);
+          return;
+        }
+      }
+
       let finalStudentId = student?.id;
       let photoUrls: string[] = [];
 
