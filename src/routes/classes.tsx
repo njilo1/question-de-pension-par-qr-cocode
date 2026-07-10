@@ -79,7 +79,7 @@ function InnerClasses() {
     <div className="space-y-6 lg:space-y-8">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Gestion des Classes</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary">Gestion des Classes</h1>
           <p className="text-muted-foreground text-base sm:text-lg mt-1">{classes.length} classes configurées pour l'établissement.</p>
         </div>
         <Dialog open={open} onOpenChange={(val) => { setOpen(val); if (!val) setEditingClass(null); }}>

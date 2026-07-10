@@ -56,54 +56,55 @@
 :root {
   --radius: 1rem;
 
-  /* Navy Blue Theme */
-  --background: oklch(0.2 0.04 250); /* Navy Blue bg-slate-900 */
-  --foreground: oklch(0.98 0.01 160); /* White text */
+  /* Thème Papier Professionnel (Optimal pour les yeux, lisible de loin) */
+  --background: #F0F2F5;           /* Gris très doux (jamais blanc pur) */
+  --foreground: #1A1A2E;           /* Bleu très foncé / Quasi-noir (moins fatiguant que le noir pur) */
 
-  --card: oklch(0.25 0.04 250); /* Slightly lighter navy for cards */
-  --card-foreground: oklch(0.98 0.01 160);
+  --card: #FFFFFF;                 /* Cartes blanches pour se détacher du fond */
+  --card-foreground: #1A1A2E;
 
-  --popover: oklch(0.25 0.04 250);
-  --popover-foreground: oklch(0.98 0.01 160);
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A2E;
 
-  --primary: oklch(0.72 0.14 160); /* Vibrant Sage / Green */
-  --primary-foreground: oklch(0.1 0.02 165);
-  --primary-glow: oklch(0.8 0.1 170);
+  --primary: #1565C0;              /* Bleu Université classique (très lisible, professionnel) */
+  --primary-foreground: #FFFFFF;
+  --primary-glow: #1976D2;
 
-  --secondary: oklch(0.25 0.04 250);
-  --secondary-foreground: oklch(0.9 0.02 160);
+  --secondary: #E3E8F0;
+  --secondary-foreground: #1A1A2E;
 
-  --muted: oklch(0.25 0.04 250);
-  --muted-foreground: oklch(0.7 0.02 250); /* Light slate for muted text */
+  --muted: #E3E8F0;
+  --muted-foreground: #546E7A;     /* Gris-bleu moyen */
 
-  --accent: oklch(0.85 0.12 90); /* Neon Gold */
-  --accent-foreground: oklch(0.1 0.02 90);
+  --accent: #E65100;               /* Orange foncé pour les accents */
+  --accent-foreground: #FFFFFF;
 
-  --success: oklch(0.75 0.15 155);
-  --success-foreground: oklch(0.1 0.04 155);
+  --success: #2E7D32;              /* Vert forêt (lisible de loin) */
+  --success-foreground: #FFFFFF;
 
-  --warning: oklch(0.88 0.15 95);
-  --warning-foreground: oklch(0.2 0.05 90);
+  --warning: #F57F17;              /* Jaune-orange soutenu */
+  --warning-foreground: #FFFFFF;
 
-  --destructive: oklch(0.6 0.18 25);
-  --destructive-foreground: oklch(0.98 0.01 0);
+  --destructive: #C62828;          /* Rouge soutenu */
+  --destructive-foreground: #FFFFFF;
 
-  --border: oklch(0.3 0.04 250);
-  --input: oklch(0.3 0.04 250);
-  --ring: oklch(0.72 0.14 160);
+  --border: #CBD5E0;
+  --input: #FFFFFF;
+  --ring: #1565C0;
 
-  --sidebar: oklch(0.15 0.04 250); /* Darker navy for sidebar */
-  --sidebar-foreground: oklch(0.96 0.01 160);
-  --sidebar-primary: oklch(0.82 0.12 85);
-  --sidebar-primary-foreground: oklch(0.2 0.05 80);
-  --sidebar-accent: oklch(0.25 0.04 250);
-  --sidebar-accent-foreground: oklch(0.98 0.01 160);
-  --sidebar-border: oklch(0.3 0.04 250);
-  --sidebar-ring: oklch(0.82 0.12 85);
+  --sidebar: #E3E8F0;
+  --sidebar-foreground: #1A1A2E;
+  --sidebar-primary: #1565C0;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #D0D9E8;
+  --sidebar-accent-foreground: #1A1A2E;
+  --sidebar-border: #CBD5E0;
+  --sidebar-ring: #1565C0;
 
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-glow));
-  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  --gradient-primary: linear-gradient(135deg, #1565C0, #1976D2);
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
 }
+
 
 
 

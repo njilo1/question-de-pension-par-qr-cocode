@@ -68,7 +68,7 @@ function Inner() {
     <div className="space-y-6 lg:space-y-8">
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Répertoire Étudiants</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary">Répertoire Étudiants</h1>
           <p className="text-muted-foreground text-base lg:text-lg mt-1">{students.length} membres enregistrés dans la base.</p>
         </div>
         <Dialog open={open} onOpenChange={(val) => { setOpen(val); if (!val) setEditingStudent(null); }}>

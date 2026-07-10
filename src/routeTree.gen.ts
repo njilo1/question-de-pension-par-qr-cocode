@@ -10,10 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyRouteImport } from './routes/verify'
-import { Route as ImportExportRouteImport } from './routes/import-export'
-import { Route as ImportExcelRouteImport } from './routes/import-excel'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ImportExportRouteImport } from './routes/import-export'
+import { Route as ImportExcelRouteImport } from './routes/import-excel'
 import { Route as FaceVerifyRouteImport } from './routes/face-verify'
 import { Route as DepensesRouteImport } from './routes/depenses'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -25,16 +25,6 @@ const VerifyRoute = VerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ImportExportRoute = ImportExportRouteImport.update({
-  id: '/import-export',
-  path: '/import-export',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImportExcelRoute = ImportExcelRouteImport.update({
-  id: '/import-excel',
-  path: '/import-excel',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const StudentsRoute = StudentsRouteImport.update({
   id: '/students',
   path: '/students',
@@ -43,6 +33,16 @@ const StudentsRoute = StudentsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportExportRoute = ImportExportRouteImport.update({
+  id: '/import-export',
+  path: '/import-export',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImportExcelRoute = ImportExcelRouteImport.update({
+  id: '/import-excel',
+  path: '/import-excel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaceVerifyRoute = FaceVerifyRouteImport.update({
@@ -169,20 +169,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/import-export': {
-      id: '/import-export'
-      path: '/import-export'
-      fullPath: '/import-export'
-      preLoaderRoute: typeof ImportExportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/import-excel': {
-      id: '/import-excel'
-      path: '/import-excel'
-      fullPath: '/import-excel'
-      preLoaderRoute: typeof ImportExcelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/students': {
       id: '/students'
       path: '/students'
@@ -195,6 +181,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import-export': {
+      id: '/import-export'
+      path: '/import-export'
+      fullPath: '/import-export'
+      preLoaderRoute: typeof ImportExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/import-excel': {
+      id: '/import-excel'
+      path: '/import-excel'
+      fullPath: '/import-excel'
+      preLoaderRoute: typeof ImportExcelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/face-verify': {

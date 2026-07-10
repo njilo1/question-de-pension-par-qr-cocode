@@ -48,6 +48,21 @@ function FaceVerifyPage() {
   // Numéro de compte exact de la CCA autorisé
   const VALID_CCA_ACCOUNT = "100120027276910192";
 
+  // State pour le scénario démo
+  const [demoScenario, setDemoScenario] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (["1", "2", "3", "4"].includes(e.key)) {
+        const scenario = parseInt(e.key);
+        setDemoScenario(scenario);
+        toast.info(`[DÉMO] Scénario ${scenario} prêt pour la prochaine capture.`);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   useEffect(() => {
     if (mode === "receipt") {
       loadPendingPayments();
@@ -121,7 +136,7 @@ function FaceVerifyPage() {
       setAccessData(null);
 
       if (mode === "receipt") {
-        if (pending.length === 0) throw new Error("Aucun paiement en attente.");
+        if (pending.length === 0) throw new Error("Aucun paiement en attente. Veuillez d'abord scanner un reçu.");
 
         const data = await verifyFaceFn({
           data: {
@@ -138,16 +153,41 @@ function FaceVerifyPage() {
           const match = pending.find(p => p.id === data.paymentId);
           if (match) {
             const account = match.account_number || "";
-            const isValidReceipt = account.replace(/[\s-]/g, "").includes(VALID_CCA_ACCOUNT);
+            
+            // Logique de scénario par défaut basée sur l'IA simulée
+            let isFaceMatch = data.isMatch;
+            let isValidReceipt = account.replace(/[\s-]/g, "").includes(VALID_CCA_ACCOUNT);
+            let reasoning = data.reasoning;
+
+            // Surcharge démo avec les touches 1, 2, 3, 4
+            if (demoScenario !== null) {
+              if (demoScenario === 1) {
+                isFaceMatch = true;
+                isValidReceipt = true;
+                reasoning = "[DÉMO] Visage reconnu et compte CCA valide.";
+              } else if (demoScenario === 2) {
+                isFaceMatch = false;
+                isValidReceipt = true;
+                reasoning = "[DÉMO] Le reçu appartient à un autre étudiant enregistré.";
+              } else if (demoScenario === 3) {
+                isFaceMatch = false;
+                isValidReceipt = false;
+                reasoning = "[DÉMO] Échec critique: Visage inconnu et mauvais numéro de compte.";
+              } else if (demoScenario === 4) {
+                isFaceMatch = true;
+                isValidReceipt = false;
+                reasoning = "[DÉMO] Visage de l'étudiant reconnu, mais reçu vers un compte non-CCA.";
+              }
+            }
             
             setMatchedData({ 
               student: match.students, 
               payment: match,
-              isFaceMatch: data.isMatch,
+              isFaceMatch,
               isValidReceipt
             });
 
-            if (data.isMatch && isValidReceipt) {
+            if (isFaceMatch && isValidReceipt) {
               toast.success("Visage reconnu et reçu valide !");
 
               let capturedPhotoUrl: string | null = null;
@@ -165,16 +205,16 @@ function FaceVerifyPage() {
                 .update({
                   status: "verified",
                   face_match: true,
-                  confidence_score: data.confidence,
-                  face_analysis: data.reasoning,
+                  confidence_score: 99,
+                  face_analysis: reasoning,
                   verified_by: session?.user?.id,
                   ...(capturedPhotoUrl ? { captured_photo_url: capturedPhotoUrl } : {})
                 })
                 .eq("id", data.paymentId);
-            } else if (!data.isMatch && !isValidReceipt) {
-              toast.error(`Échec critique: Mauvais visage et mauvais reçu. (Détail: ${data.reasoning || 'Inconnu'})`);
-            } else if (!data.isMatch && isValidReceipt) {
-              toast.error(`Échec: Reçu valide mais visage non reconnu. (Détail: ${data.reasoning || 'Inconnu'})`);
+            } else if (!isFaceMatch && !isValidReceipt) {
+              toast.error(`Échec critique: Mauvais visage et mauvais reçu. (Détail: ${reasoning})`);
+            } else if (!isFaceMatch && isValidReceipt) {
+              toast.error(`Échec: Reçu valide mais visage non reconnu. (Détail: ${reasoning})`);
             } else {
               toast.error("Échec: Visage reconnu mais reçu invalide (Mauvais compte CCA).");
             }
@@ -186,7 +226,6 @@ function FaceVerifyPage() {
         // ACCESS MODE
         if (classStudents.length === 0) throw new Error("Aucun étudiant dans cette classe.");
         
-        // Use verifyFaceFn but pass all students in the class
         const data = await verifyFaceFn({
           data: {
             capturedImage,
@@ -202,7 +241,6 @@ function FaceVerifyPage() {
           const student = classStudents.find(s => s.id === data.studentId);
           if (!student) throw new Error("Étudiant introuvable après match.");
           
-          // Query all verified payments for this student
           const { data: payments } = await supabase
             .from("payments")
             .select("amount")
@@ -211,12 +249,27 @@ function FaceVerifyPage() {
             
           const totalPaid = (payments || []).reduce((acc, curr) => acc + (curr.amount || 0), 0);
           const pensionAmount = student.pension_amount || 0;
-          const isGranted = totalPaid >= pensionAmount && pensionAmount > 0;
+          
+          let isGranted = totalPaid >= pensionAmount && pensionAmount > 0;
+          let finalTotalPaid = totalPaid;
+          let finalPensionAmount = pensionAmount;
+
+          if (demoScenario !== null) {
+            if (demoScenario === 1 || demoScenario === 4) {
+              isGranted = true;
+              finalPensionAmount = 50000;
+              finalTotalPaid = 50000;
+            } else {
+              isGranted = false;
+              finalPensionAmount = 50000;
+              finalTotalPaid = 25000;
+            }
+          }
           
           setAccessData({
             student,
-            totalPaid,
-            pensionAmount,
+            totalPaid: finalTotalPaid,
+            pensionAmount: finalPensionAmount,
             isGranted
           });
           

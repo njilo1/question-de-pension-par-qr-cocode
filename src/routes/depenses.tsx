@@ -120,7 +120,7 @@ function Inner() {
     <div className="space-y-10">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Audit des Paiements</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary">Audit des Paiements</h1>
           <p className="text-muted-foreground text-base sm:text-lg mt-1">
             Traçabilité complète et historique des vérifications biométriques.
           </p>

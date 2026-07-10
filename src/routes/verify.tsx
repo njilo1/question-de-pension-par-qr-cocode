@@ -216,7 +216,7 @@ function VerifyPage() {
       <div className="max-w-2xl mx-auto space-y-6">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-white">Session Scanner Reçu</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-primary">Session Scanner Reçu</h1>
             <p className="text-muted-foreground mt-1">Étape 1 : Acquisition des données du reçu.</p>
           </div>
           <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-premium">

@@ -86,7 +86,7 @@ function Inner() {
             <FileSpreadsheet className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Import / Export Excel</h1>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-primary">Import / Export Excel</h1>
             <p className="text-muted-foreground text-sm sm:text-lg mt-0.5">
               Synchronisez la base étudiants avec les fichiers Excel de la scolarité.
             </p>

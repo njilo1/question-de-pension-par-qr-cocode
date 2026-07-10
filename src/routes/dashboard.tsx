@@ -110,7 +110,7 @@ function Dashboard() {
     <div className="space-y-6 lg:space-y-12">
       <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">Tableau de Bord</h1>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-primary">Tableau de Bord</h1>
           <p className="text-muted-foreground text-base lg:text-xl mt-2">Supervision en temps réel des flux de vérification.</p>
         </div>
         <Link to="/verify" className="flex-shrink-0">
@@ -129,7 +129,7 @@ function Dashboard() {
       </div>
 
       <Card className="p-4 lg:p-8">
-        <h2 className="font-semibold text-xl lg:text-2xl text-white mb-4 lg:mb-6">Vérifications récentes</h2>
+        <h2 className="font-semibold text-xl lg:text-2xl text-primary mb-4 lg:mb-6">Vérifications récentes</h2>
         {loading ? (
           <div className="text-muted-foreground text-sm">Chargement…</div>
         ) : recent.length === 0 ? (
