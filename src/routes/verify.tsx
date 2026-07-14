@@ -621,7 +621,10 @@ export function FaceCapture({ onCapture, isVerifying = false }: { onCapture: (im
             <RefreshCw className="h-4 w-4 mr-2" /> Reprendre
           </Button>
           <Button disabled className="flex-[2] font-bold">
-            <Loader2 className="h-4 w-4 animate-spin mr-2" /> 
+            {isVerifying 
+              ? <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              : <CheckCircle2 className="h-4 w-4 mr-2 text-green-400" />
+            }
             {isVerifying ? "Analyse en cours..." : "Photo capturée"}
           </Button>
         </div>

@@ -33,21 +33,25 @@ function PublicLandingPage() {
 
   useEffect(() => {
     const fetchStats = async () => {
-      const today = new Date(); today.setHours(0, 0, 0, 0);
-      const iso = today.toISOString();
+      try {
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const iso = today.toISOString();
 
-      const [studentsRes, verifiedRes, rejectedRes] = await Promise.all([
-        supabase.from("students").select("id", { count: "exact", head: true }),
-        supabase.from("payments").select("id", { count: "exact", head: true }).eq("status", "verified").gte("created_at", iso),
-        supabase.from("payments").select("id", { count: "exact", head: true }).eq("status", "rejected").gte("created_at", iso)
-      ]);
+        const [studentsRes, verifiedRes, rejectedRes] = await Promise.all([
+          supabase.from("students").select("id", { count: "exact", head: true }),
+          supabase.from("payments").select("id", { count: "exact", head: true }).eq("status", "verified").gte("created_at", iso),
+          supabase.from("payments").select("id", { count: "exact", head: true }).eq("status", "rejected").gte("created_at", iso)
+        ]);
 
-      setStats({
-        totalStudents: studentsRes.count ?? 0,
-        verifiedToday: (verifiedRes.count ?? 0) + (rejectedRes.count ?? 0),
-        paymentsValidated: verifiedRes.count ?? 0,
-        alertsDetected: rejectedRes.count ?? 0,
-      });
+        setStats({
+          totalStudents: studentsRes.count ?? 0,
+          verifiedToday: (verifiedRes.count ?? 0) + (rejectedRes.count ?? 0),
+          paymentsValidated: verifiedRes.count ?? 0,
+          alertsDetected: rejectedRes.count ?? 0,
+        });
+      } catch {
+        // Stats are non-critical; silently keep defaults on network failure
+      }
     };
     fetchStats();
   }, []);

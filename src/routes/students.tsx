@@ -43,13 +43,25 @@ function Inner() {
   const [open, setOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [reload, setReload] = useState(0);
+  const [fetchLoading, setFetchLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   useEffect(() => {
+    setFetchLoading(true);
+    setFetchError(null);
     supabase
       .from("students")
       .select("*")
       .order("created_at", { ascending: false })
-      .then(({ data }) => setStudents((data as Student[]) || []));
+      .then(({ data, error }) => {
+        if (error) {
+          setFetchError("Impossible de charger les étudiants. Vérifiez votre connexion internet.");
+          toast.error("Erreur réseau : " + error.message);
+        } else {
+          setStudents((data as Student[]) || []);
+        }
+      })
+      .finally(() => setFetchLoading(false));
   }, [reload]);
 
   const filtered = students.filter((s) => {
@@ -98,7 +110,23 @@ function Inner() {
         />
       </div>
 
-      {filtered.length === 0 ? (
+      {fetchLoading ? (
+        <Card className="p-20 text-center text-muted-foreground glass-card border-dashed">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-8 w-8 rounded-full border-4 border-primary/30 border-t-primary animate-spin" />
+            <span>Chargement des étudiants…</span>
+          </div>
+        </Card>
+      ) : fetchError ? (
+        <Card className="p-20 text-center glass-card border-dashed border-destructive/30">
+          <div className="flex flex-col items-center gap-4">
+            <div className="text-destructive text-sm font-medium">{fetchError}</div>
+            <Button variant="outline" size="sm" onClick={() => setReload((x) => x + 1)}>
+              Réessayer
+            </Button>
+          </div>
+        </Card>
+      ) : filtered.length === 0 ? (
         <Card className="p-20 text-center text-muted-foreground glass-card border-dashed">
           Aucun étudiant trouvé correspondant à votre recherche.
         </Card>
